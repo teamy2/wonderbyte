@@ -42,9 +42,10 @@
 							delay={300}
 							interval={50}
 						>
-							<p>discovery</p>
-							<p>adventure</p>
-							<p>space</p>
+							<p>nutrition</p>
+							<p>food</p>
+							<p>cooking</p>
+							<p>health</p>
 						</Typewriter>
 					</span>
 
