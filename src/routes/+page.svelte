@@ -49,9 +49,8 @@
 						</Typewriter>
 					</span>
 
-					<a class="btn btn-primary group" href="/register">Get started</a>
-					<a class="btn btn-accent group" href="/learn">
-						Learn more
+					<a class="btn btn-accent group" href="/submit">
+						Submit an image
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
