@@ -74,7 +74,7 @@
 				{:else}
 					{#each { length: 5 } as _}
 						<div
-							class="badge badge-lg skeleton"
+							class="badge badge-lg badge-neutral skeleton"
 							style="width: {Math.floor(Math.random() * 20 + 100)}px"
 						/>
 					{/each}
