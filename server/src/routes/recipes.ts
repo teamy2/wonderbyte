@@ -43,6 +43,17 @@ router.get("/:id", transform(GetRecipe, async (request) => {
 	return recipe.rows[0];
 }));
 
+router.get("/:id/thumbnail", async (request, response) => {
+	try {
+		response.setHeader("Content-Type", "image/png");
+		response.send(fs.createReadStream(
+			path.join("./thumbnails", request.params.id),
+		));
+	} catch {
+		return response.status(404).send();
+	}
+});
+
 const CreateRecipe = z.object({
 	body: z.object({
 		thumbnail: z.string(),

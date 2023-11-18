@@ -10,8 +10,9 @@
 
 	onMount(async () => {
 		const response = await fetch('http://localhost:4040/recipes');
+		const data = await response.json();
 
-		items = await response.json();
+		items = data.data;
 		loading = false;
 	});
 </script>

@@ -11,9 +11,9 @@ const openai = new OpenAI({
 const Recipe = z.object({
 	name: z.string(),
 	description: z.string(),
-	instructions: z.array(z.string()),
-	ingredients: z.array(z.string()),
-	tags: z.array(z.string()),
+	instructions: z.string().array(),
+	ingredients: z.string().array(),
+	tags: z.string().array(),
 });
 
 export async function generateRecipe(image: string) {
