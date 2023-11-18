@@ -11,9 +11,19 @@ import { transform } from '../response';
 
 const router = express.Router();
 
-// Get all recipes
-router.get("/", transform(null, async () => {
-	const recipes = await pool.query<Recipe>("SELECT * FROM recipe");
+const SearchRecipe = z.object({
+	query: z.object({
+		tags: z.string().transform((value) => value.split(",")).optional(),
+	}),
+});
+
+// Get recipes or search by tags
+router.get("/", transform(SearchRecipe, async (request) => {
+	const recipes =request.query.tags?.length
+		? await pool.query<Recipe>("SELECT * FROM recipe WHERE tags && $1", [
+			request.query.tags,
+		])
+		: await pool.query<Recipe>("SELECT * FROM recipe");
 
 	return recipes.rows;
 }));
