@@ -1,5 +1,5 @@
 <header class="absolute left-0 right-0 top-0 z-50 flex items-center gap-8 p-4">
-	<a class="flex items-center" href="#">
+	<a class="flex items-center" href="/">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="24"
