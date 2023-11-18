@@ -51,13 +51,15 @@
 		ctx.drawImage(image, 0, 0, width, height);
 		const base64 = canvas.toDataURL('image/png').slice(22);
 
-		await fetch('http://localhost:4040/recipes', {
+		const response = await fetch('http://localhost:4040/recipes', {
 			method: 'POST',
 			body: JSON.stringify({ thumbnail: base64 }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		});
+
+		console.log(await response.json());
 	}
 
 	function clearCanvas() {
