@@ -11,14 +11,14 @@ const config = {
 	daisyui: {
 		themes: [
 			{
-				dark: {
-					...require('daisyui/src/theming/themes')['dark'],
+				light: {
+					...require('daisyui/src/theming/themes')['light'],
 					'primary': '#78C091',
-					'primary-content': '#ffffff',
+					'primary-content': '#000',
 					'secondary': '#6E9075',
-					'secondary-content': '#ffffff',
+					'secondary-content': '#000',
 					'accent': '#563635',
-					'accent-content': '#ffffff',
+					'accent-content': '#000',
 				}
 			}
 		]
