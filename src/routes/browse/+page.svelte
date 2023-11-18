@@ -1,18 +1,20 @@
 <script>
+	import { onMount } from 'svelte';
+	import MasonryLayout from 'svelte-masonry-layout';
+
 	import Container from '$lib/components/Container.svelte';
 	import Thumbnail from '$lib/components/recipe/Thumbnail.svelte';
-	import { onMount } from 'svelte';
-
-	import MasonryLayout from 'svelte-masonry-layout';
+	import * as api from '$lib/api';
+	import { sleep } from '$lib/util';
 
 	let items = Array.from({ length: 200 });
 	let loading = true;
 
 	onMount(async () => {
-		const response = await fetch('http://localhost:4040/recipes');
-		const data = await response.json();
+		items = await api.recipes();
 
-		items = data.data;
+		await sleep(1_000);
+
 		loading = false;
 	});
 </script>

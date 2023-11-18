@@ -42,7 +42,7 @@ description: string,
 instructions: string[],
 ingredients: string[],
 }
-If the image is unrelated to food, you should return:
+If the contents in the image cannot be included in a recipe, you should return the following:
 {
 success: false,
 }`,
@@ -64,6 +64,8 @@ success: false,
 	const output = response.choices[0].message.content?.startsWith("```json")
 		? response.choices[0].message.content.slice(7, -3)
 		: response.choices[0].message.content;
+
+		console.log(output);
 
 	const json = JSON.parse(output!);
 
