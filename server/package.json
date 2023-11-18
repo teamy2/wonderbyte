@@ -5,7 +5,8 @@
 	"main": "gpt.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node build/index.js\""
+		"dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node build/index.js\"",
+    "gpt": "nodemon ./src/gpt.ts"
 	},
 	"keywords": [],
 	"author": "",
