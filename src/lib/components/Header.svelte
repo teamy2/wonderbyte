@@ -1,6 +1,4 @@
-<header
-	class="absolute left-0 right-0 top-0 z-50 flex items-center justify-between p-4 bg-base-100 shadow-md"
->
+<header class="absolute left-0 right-0 top-0 z-50 flex items-center gap-8 p-4">
 	<a class="flex items-center" href="#">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +19,7 @@
 		</svg>
 		<span class="ml-2 text-2xl font-semibold">CookingSite</span>
 	</a>
-	<nav class="hidden md:flex items-center space-x-4">
+	<nav class="hidden md:flex space-x-4">
 		<a
 			class="px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"
 			href="/"
