@@ -1,5 +1,6 @@
 import { OpenAI } from "openai";
 import dotenv from "dotenv";
+import util from "node:util"
 
 dotenv.config();
 
@@ -8,7 +9,7 @@ const openai = new OpenAI({
 });
 
 
-async function main() {
+export async function generateRecipe(image: string) {
     const response = await openai.chat.completions.create({
       model: "gpt-4-vision-preview",
       max_tokens: 4096,
@@ -16,17 +17,25 @@ async function main() {
         {
           role: "user",
           content: [
-            { type: "text", text: "Give me a recipe for the food item in the image" },
+            { type: "text", text: `Give me a recipe for the food item in the image as an unformatted json object with the following properties: {
+                name: string,
+                description: string,
+                instructions: string[],
+                ingredients: string[],
+              }`},
             {
               type: "image_url",
               image_url: {
-                "url": "https://chocolatecoveredkatie.com/wp-content/uploads/2018/08/Vegan-Kraft-Mac-Cheese-500x500.jpg",
+                "url": `data:image/png;base64,${image}`,
               },
             },
           ],
         },
       ],
     });
-    console.log(response.choices[0]);
-  }
-  main();
+    const output = response.choices[0].message.content?.startsWith("```json") 
+        ? response.choices[0].message.content.slice(7, -3) 
+        : response.choices[0].message.content;
+    const json = JSON.parse(output!);
+    return json;
+}

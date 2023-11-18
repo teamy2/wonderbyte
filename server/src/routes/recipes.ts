@@ -3,6 +3,7 @@ import { recipes } from "..";
 import { pool } from "../database";
 import fs from "fs";
 import path from "path";
+import { generateRecipe } from "../gpt";
 
 const router = express.Router();
 
@@ -30,7 +31,9 @@ router.post("/", async (request, res) => {
 			path.join("./thumbnails", id.toString()),
 			base64Image
 		);
-		res.json({ status: "success" });
+		res.json({ 
+			status: "success",
+		recipe: await generateRecipe(request.body.thumbnail) });
 	} catch (error) {
 		console.log(error);
 		res.json({ status: "error" });
