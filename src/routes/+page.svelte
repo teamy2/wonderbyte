@@ -15,7 +15,9 @@
 	</svg>
 </a>
 
-<div class="grid justify-center px-8 relative overflow-hidden">
+<div
+	class="grid justify-center px-8 relative overflow-hidden p-8 md:p-12 lg:p-16"
+>
 	<div class="max-w-4xl w-full">
 		<div class="min-h-screen flex items-center">
 			<div
@@ -49,6 +51,7 @@
 						</Typewriter>
 					</span>
 
+					<a class="btn btn-primary group" href="/browse">Browse recipes</a>
 					<a class="btn btn-accent group" href="/submit">
 						Submit an image
 						<svg

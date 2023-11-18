@@ -14,6 +14,9 @@ dependencies:
   gsap:
     specifier: ^3.12.2
     version: 3.12.2
+  svelte-masonry-layout:
+    specifier: ^0.0.7
+    version: 0.0.7
   svelte-reveal:
     specifier: ^0.7.0
     version: 0.7.0
@@ -1820,6 +1823,10 @@ packages:
     dependencies:
       svelte: 3.54.0
     dev: true
+
+  /svelte-masonry-layout@0.0.7:
+    resolution: {integrity: sha512-IvIya7V3uQs1Pb2+dSLgAOKFO1hnoEBgmrDah/Y9YIxs/Z9p4PuWc+rXAYur0JGMaW7/IuZ51oIlzxqsxCPtWA==}
+    dev: false
 
   /svelte-preprocess@5.1.0(postcss-load-config@4.0.1)(postcss@8.4.31)(svelte@3.54.0)(typescript@4.9.5):
     resolution: {integrity: sha512-EkErPiDzHAc0k2MF5m6vBNmRUh338h2myhinUw/xaqsLs7/ZvsgREiLGj03VrSzbY/TB5ZXgBOsKraFee5yceA==}
