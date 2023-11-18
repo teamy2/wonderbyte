@@ -7,7 +7,7 @@ import cors from "cors";
 declare global {
 	export type Recipe = {
 		id: number;
-		category: string;
+		tags: string[];
 		description: string;
 		ingredients: string[];
 		directions: string[];
@@ -17,7 +17,7 @@ declare global {
 pool.query(`CREATE TABLE IF NOT EXISTS recipe (
 	id SERIAL PRIMARY KEY,
 	name TEXT,
-	category TEXT,
+	tags TEXT[],
 	description TEXT,
 	instructions TEXT[],
 	ingredients TEXT[]
