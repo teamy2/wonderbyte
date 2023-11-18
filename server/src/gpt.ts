@@ -1,15 +1,21 @@
 import { OpenAI } from "openai";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env["OPENAI_API_KEY"],
 });
 
 async function main() {
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [{ role: 'user', content: 'Say this is a test' }],
-      model: 'gpt-3.5-turbo',
+    const stream = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [{ role: 'user', content: 'Say this is a test,'}],
+      stream: true,
     });
-    console.log(chatCompletion.choices[1]);
+    for await (const chunk of stream) {
+      process.stdout.write(chunk.choices[0]?.delta?.content || '');
+    }
   }
   
   main();
