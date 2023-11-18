@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Recipe from '$lib/components/recipe/Recipe.svelte';
 	import { onMount } from 'svelte';
 	let canvas: HTMLCanvasElement;
 	let video: HTMLVideoElement;
@@ -12,6 +13,7 @@
 	let videoEnabled = false;
 	let imageSrc: string;
 
+	let recipe: any = null;
 	let loading = false;
 	onMount(() => {
 		video = document.getElementById('video')! as HTMLVideoElement;
@@ -59,6 +61,7 @@
 		ctx.drawImage(image, 0, 0, width, height);
 		const base64 = canvas.toDataURL('image/png').slice(22);
 		loading = true;
+
 		const response = await fetch('http://localhost:4040/recipes', {
 			method: 'POST',
 			body: JSON.stringify({ thumbnail: base64 }),
@@ -66,8 +69,13 @@
 				'Content-Type': 'application/json',
 			},
 		});
-		loading = false;
-		console.log(await response.json());
+
+		const json = await response.json();
+
+		if (json.success) {
+			recipe = json.data;
+			console.log(json.data);
+		}
 	}
 
 	function clearCanvas() {
@@ -76,7 +84,7 @@
 	}
 </script>
 
-<div class="flex flex-col justify-center items-center h-screen gap-4">
+<div class="flex flex-col justify-center items-center min-h-screen gap-4">
 	{#if !loading}
 		<h2 class="text-xl">Upload your image!</h2>
 		<input
@@ -165,6 +173,10 @@
 
 		<canvas id="canvas" class="hidden" {width} {height} />
 	{:else}
-		<span class="loading loading-spinner loading-lg" />
+		{#if !recipe}
+			<span class="loading loading-spinner loading-lg" />
+		{/if}
+
+		<Recipe {recipe} />
 	{/if}
 </div>
