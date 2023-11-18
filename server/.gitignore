@@ -1,1 +1,3 @@
 build
+thumbnails/*
+!thumbnails/.keep

@@ -1,29 +1,46 @@
+import fs from "node:fs";
+import path from "node:path";
+
 import express from "express";
+import { z } from 'zod';
+
 import { pool } from "../database";
-import fs from "fs";
-import path from "path";
 import { generateRecipe } from "../gpt";
+import { transform } from '../response';
+
 
 const router = express.Router();
 
 // Get all recipes
-router.get("/", async (request, res) => {
+router.get("/", transform(null, async () => {
 	const recipes = await pool.query<Recipe>("SELECT * FROM recipe");
 
-	res.json(recipes.rows);
+	return recipes.rows;
+}));
+
+const GetRecipe = z.object({
+	params: z.object({
+		id: z.coerce.number(),
+	}),
 });
 
 // Get recipe by id
-router.get("/:id", async (request, res) => {
+router.get("/:id", transform(GetRecipe, async (request) => {
 	const recipe = await pool.query<Recipe>("SELECT * FROM recipe WHERE id = $1", [
 		request.params.id,
 	]);
 
-	res.json(recipe.rows[0]);
+	return recipe.rows[0];
+}));
+
+const CreateRecipe = z.object({
+	body: z.object({
+		thumbnail: z.string(),
+	}),
 });
 
 // Post recipe
-router.post("/", async (request, res) => {
+router.post("/", transform(CreateRecipe, async (request) => {
 	const base64Image = Buffer.from(request.body.thumbnail, "base64");
 	const recipe = await generateRecipe(request.body.thumbnail);
 
@@ -37,10 +54,7 @@ router.post("/", async (request, res) => {
 		base64Image
 	);
 
-	res.json({
-		success: true,
-		recipe: rows[0],
-	});
-});
+	return rows[0];
+}));
 
 export { router as recipeRouter };
