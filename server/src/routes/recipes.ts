@@ -73,8 +73,8 @@ router.post("/", transform(CreateRecipe, async (request) => {
 	}
 
 	const { rows } = await pool.query<Recipe>(
-		"INSERT INTO recipe (name, description, instructions, ingredients) VALUES ($1, $2, $3, $4) RETURNING *",
-		[recipe.name, recipe.description, recipe.instructions, recipe.ingredients]
+		"INSERT INTO recipe (name, description, instructions, ingredients, tags) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+		[recipe.name, recipe.description, recipe.instructions, recipe.ingredients, recipe.tags]
 	);
 
 	await fs.promises.writeFile(
