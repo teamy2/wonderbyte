@@ -29,6 +29,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"daisyui": "^4.3.1"
+		"@tailwindcss/typography": "^0.5.10",
+		"daisyui": "^4.3.1",
+		"gsap": "^3.12.2",
+		"svelte-reveal": "^0.7.0",
+		"svelte-typewriter": "^3.1.6"
 	}
 }
