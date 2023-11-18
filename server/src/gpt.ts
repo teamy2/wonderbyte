@@ -1,13 +1,18 @@
 import { OpenAI } from "openai";
-import dotenv from "dotenv";
+import dotenv from "dotenv/config";
 import sharp from 'sharp';
-
-dotenv.config();
+import { z } from 'zod';
 
 const openai = new OpenAI({
     apiKey: process.env["OPENAI_API_KEY"],
 });
 
+const Recipe = z.object({
+		name: z.string(),
+		description: z.string(),
+		instructions: z.array(z.string()),
+		ingredients: z.array(z.string()),
+});
 
 export async function generateRecipe(image: string) {
 		console.log(image.length);
@@ -46,5 +51,8 @@ export async function generateRecipe(image: string) {
         : response.choices[0].message.content;
 
     const json = JSON.parse(output!);
+
+		Recipe.parse(json);
+
     return json;
 }
