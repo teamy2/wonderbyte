@@ -31,11 +31,11 @@
 			</div>
 		{:else}
 			<div class="prose col-span-3">
-				<h1 class="w-[40rem] max-w-full skeleton h-9" />
+				<div class="w-[40rem] max-w-full skeleton h-9" />
 
 				<p class="w-96 skeleton h-8" />
 
-				<h2 class="w-72 skeleton h-8" />
+				<div class="w-72 skeleton h-8" />
 
 				<ul class="w-96">
 					{#each Array.from({ length: 5 }) as _}
@@ -43,7 +43,7 @@
 					{/each}
 				</ul>
 
-				<h2 class="w-72 skeleton h-8" />
+				<div class="w-72 skeleton h-8" />
 
 				<ol class="w-96">
 					{#each Array.from({ length: 5 }) as _}

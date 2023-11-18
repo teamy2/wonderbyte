@@ -14,6 +14,7 @@ declare global {
 		description: string;
 		ingredients: string[];
 		instructions: string[];
+		tags: string[];
 	}
 }
 
