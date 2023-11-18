@@ -19,6 +19,7 @@
 		</svg>
 		<span class="ml-2 text-2xl font-semibold">CookingSite</span>
 	</a>
+
 	<nav class="hidden md:flex space-x-4">
 		<a
 			class="px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"

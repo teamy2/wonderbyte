@@ -8,7 +8,7 @@ const openai = new OpenAI({
 	apiKey: process.env["OPENAI_API_KEY"],
 });
 
-const Recipe = z.object({
+const APIRecipe = z.object({
 	name: z.string(),
 	description: z.string(),
 	instructions: z.string().array(),
@@ -16,7 +16,12 @@ const Recipe = z.object({
 	tags: z.string().array(),
 });
 
-export async function generateRecipe(image: string) {
+const Recipe = z.object({
+	success: z.literal(false),
+})
+	.or(APIRecipe);
+
+export async function generateRecipe(image: string): Promise<z.infer<typeof APIRecipe> | null> {
 	const buf = Buffer.from(image, "base64");
 	const resized = await sharp(buf).resize(192, 192).toBuffer();
 	image = resized.toString("base64");
@@ -36,6 +41,10 @@ tags: string[],
 description: string,
 instructions: string[],
 ingredients: string[],
+}
+If the image is unrelated to food, you should return:
+{
+success: false,
 }`,
 			},
 			{
@@ -60,5 +69,5 @@ ingredients: string[],
 
 	Recipe.parse(json);
 
-	return json;
+	return json.success ? null : json;
 }

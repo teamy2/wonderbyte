@@ -19,6 +19,14 @@ export async function recipe(id: number): Promise<Recipe | null> {
 	return data.success ? data.data : null;
 }
 
+export async function createRecipe(thumbnail: string): Promise<Recipe | null> {
+	const { data } = await client.post<Response<Recipe>>(`/recipes`, {
+		thumbnail,
+	});
+
+	return data.success ? data.data : null;
+}
+
 export async function recipes(): Promise<Recipe[]> {
 	const { data } = await client.get<Response<Recipe[]>>('/recipes');
 

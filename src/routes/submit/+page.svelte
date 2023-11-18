@@ -1,170 +1,188 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import RecipeComponent from '$lib/components/recipe/Recipe.svelte';
+	import CameraOff from '~icons/mdi/camera-off';
+	import CameraPlus from '~icons/mdi/camera-plus';
+	import ImagePlus from '~icons/mdi/image-plus';
+
+	import * as api from '$lib/api';
+
+	const enum VideoStatus {
+		ENABLED,
+		DISABLED,
+		BLOCKED,
+	}
+
 	let canvas: HTMLCanvasElement;
 	let video: HTMLVideoElement;
 
 	let file: HTMLInputElement;
-	let image: HTMLImageElement;
 	let width: number;
 	let height: number;
 
-	let cameraBlocked = false;
-	let videoEnabled = false;
-	let imageSrc: string;
+	let preview: string;
+	let videoStatus = VideoStatus.DISABLED;
 
-	let loading = false;
-	onMount(() => {
-		video = document.getElementById('video')! as HTMLVideoElement;
-		file = document.getElementById('file')! as HTMLInputElement;
-		canvas = document.getElementById('canvas')! as HTMLCanvasElement;
-		image = document.getElementById('image')! as HTMLImageElement;
-	});
+	let submitted = false;
+	let recipe: Recipe | null = null;
 
 	async function enableCamera() {
 		try {
-			let stream = await navigator.mediaDevices.getUserMedia({
+			video.srcObject = await navigator.mediaDevices.getUserMedia({
 				video: true,
 				audio: false,
 			});
-			videoEnabled = true;
-			video.srcObject = stream;
-			video.play();
+
+			await video.play();
+			videoStatus = VideoStatus.ENABLED;
 		} catch (e) {
-			cameraBlocked = true;
+			videoStatus = VideoStatus.BLOCKED;
 		}
 	}
+
 	function takePicture() {
 		clearCanvas();
 
-		const ctx = canvas.getContext('2d')!;
-		ctx.drawImage(video, 0, 0);
-
-		imageSrc = canvas.toDataURL('image/png');
-		image.setAttribute('src', imageSrc);
+		canvas.getContext('2d')!.drawImage(video, 0, 0);
+		preview = canvas.toDataURL('image/png');
 	}
 
 	function submitFile() {
 		clearCanvas();
 
 		let reader = new FileReader();
+
 		reader.onload = function (e) {
-			imageSrc = e.target!.result as string;
-			image.setAttribute('src', imageSrc);
+			preview = e.target!.result as string;
 		};
+
 		reader.readAsDataURL(file.files![0]);
 	}
 
 	async function submitPicture() {
-		const ctx = canvas.getContext('2d')!;
-		ctx.drawImage(image, 0, 0, width, height);
-		const base64 = canvas.toDataURL('image/png').slice(22);
-		loading = true;
-		const response = await fetch('http://localhost:4040/recipes', {
-			method: 'POST',
-			body: JSON.stringify({ thumbnail: base64 }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		loading = false;
-		console.log(await response.json());
+		submitted = true;
+		recipe = await api.createRecipe(preview.slice(22));
 	}
 
 	function clearCanvas() {
-		const ctx = canvas.getContext('2d')!;
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		canvas.getContext('2d')!.clearRect(0, 0, canvas.width, canvas.height);
 	}
 </script>
 
-<div class="flex flex-col justify-center items-center h-screen gap-4">
-	{#if !loading}
-		<h2 class="text-xl">Upload your image!</h2>
-		<input
-			accept="image/*"
-			id="file"
-			type="file"
-			on:change={submitFile}
-			class="file-input w-full max-w-xs input-bordered"
-		/>
+{#if submitted}
+	<div class="mt-16">
+		<RecipeComponent {recipe} />
+	</div>
+{:else}
+	<div class="grid place-content-center h-screen w-full mt-16">
+		<div class="w-full h-full flex flex-col gap-8">
+			<div class="w-full prose">
+				<h1 class="text-xl">Recipe generation AI</h1>
 
-		<h2>Or...</h2>
-		<div
-			class="grid grid-cols-2 w-full max-w-7xl aspect-video gap-4 place-items-center h-3/5"
-		>
-			{#if !videoEnabled}
-				<div class="skeleton h-full w-full grid place-items-center">
-					{#if cameraBlocked}
-						<h2>Camera Blocked</h2>
+				<p>
+					Upload a picture of your dish and we'll generate a recipe for you!
+				</p>
+			</div>
+
+			<div
+				class="grid grid-cols-2 w-full max-w-7xl aspect-video gap-4 place-items-center h-3/5"
+			>
+				{#if videoStatus !== VideoStatus.ENABLED}
+					{#if videoStatus === VideoStatus.BLOCKED}
+						<div
+							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center hover:bg-base-300 transition-all duration-300"
+						>
+							<CameraOff class="w-8 h-8" />
+						</div>
 					{:else}
-						<button id="start" class="btn" on:click={enableCamera}
-							>Enable Camera</button
+						<button
+							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center hover:bg-base-300 transition-all duration-300"
+							on:click={enableCamera}
 						>
+							<CameraPlus class="w-8 h-8" />
+						</button>
 					{/if}
-				</div>
-			{/if}
-
-			<div class="relative" class:hidden={!videoEnabled}>
-				<video
-					muted
-					id="video"
-					class=" rounded-2xl my-auto"
-					bind:videoWidth={width}
-					bind:videoHeight={height}
-				>
-					Video stream not available.
-				</video>
-				<div
-					class="absolute bottom-0 left-0 right-0 flex place-content-center p-4"
-				>
-					<button
-						id="start"
-						class=" w-8 h-8 rounded-full bg-white outline outline-white outline-1 outline-offset-4 hover:bg-gray-300"
-						on:click={takePicture}
-					/>
-				</div>
-			</div>
-
-			<div class:hidden={!imageSrc} class="relative">
-				<img alt="Could not load" id="image" class="rounded-2xl object-cover" />
+				{/if}
 
 				<div
-					class="absolute bottom-0 left-0 right-0 flex place-content-center p-4 0"
+					class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
+					class:hidden={videoStatus !== VideoStatus.ENABLED}
 				>
-					<button
-						class="opacity-50 hover:opacity-80 swap swap-rotate hover:swap-active"
-						on:click={submitPicture}
+					<video
+						muted
+						bind:this={video}
+						bind:videoWidth={width}
+						bind:videoHeight={height}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class=" swap-off fill-success w-10 h-10"
-							viewBox="0 0 24 24"
-							><path
-								d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
-							/></svg
-						>
+						Video stream not available.
+					</video>
 
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="swap-on fill-success w-10 h-10"
-							viewBox="0 0 24 24"
-							><path
-								d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
-							/></svg
-						>
-					</button>
+					<div
+						class="absolute bottom-0 left-0 right-0 flex place-content-center p-4"
+					>
+						<button
+							id="start"
+							class=" w-8 h-8 rounded-full bg-white outline outline-white outline-1 outline-offset-4 hover:bg-gray-300"
+							on:click={takePicture}
+						/>
+					</div>
 				</div>
+
+				<label class="w-full h-full">
+					{#if preview}
+						<div
+							class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
+							class:hidden={!preview}
+						>
+							<img alt="Could not load" class="object-cover" src={preview} />
+
+							<div
+								class="absolute bottom-4 left-0 right-0 flex place-content-center"
+							>
+								<button
+									class="hover:opacity-80 swap swap-rotate hover:swap-active"
+									on:click={submitPicture}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class=" swap-off fill-success w-10 h-10"
+										viewBox="0 0 24 24"
+									>
+										<path
+											d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+										/>
+									</svg>
+
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										class="swap-on fill-success w-10 h-10"
+										viewBox="0 0 24 24"
+									>
+										<path
+											d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+										/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					{:else}
+						<div
+							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center"
+						>
+							<ImagePlus class="w-8 h-8" />
+						</div>
+					{/if}
+
+					<input
+						accept="image/png"
+						bind:this={file}
+						type="file"
+						on:change={submitFile}
+						class="opacity-0"
+					/>
+				</label>
 			</div>
 
-			{#if !imageSrc}
-				<div class="skeleton h-full w-full grid place-items-center">
-					<h2>Your image goes here!</h2>
-				</div>
-			{/if}
+			<canvas bind:this={canvas} class="hidden" {width} {height} />
 		</div>
-		<div class="flex gap-2" />
-
-		<canvas id="canvas" class="hidden" {width} {height} />
-	{:else}
-		<span class="loading loading-spinner loading-lg" />
-	{/if}
-</div>
+	</div>
+{/if}
