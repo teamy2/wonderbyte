@@ -6,42 +6,42 @@
 
 	let file: HTMLInputElement;
 	let image: HTMLImageElement;
-	let width = 400;
-	let height = 400;
+	let width: number;
+	let height: number;
 
-	onMount(() => {
+	let imageSrc: string;
+	onMount(async () => {
 		video = document.getElementById('video')! as HTMLVideoElement;
 		file = document.getElementById('file')! as HTMLInputElement;
 		canvas = document.getElementById('canvas')! as HTMLCanvasElement;
 
 		image = document.getElementById('image')! as HTMLImageElement;
-		navigator.mediaDevices
-			.getUserMedia({ video: true, audio: false })
-			.then((stream) => {
-				video.srcObject = stream;
-				video.play();
+		let stream = await navigator.mediaDevices.getUserMedia({
+			video: true,
+			audio: false,
+		});
 
-				width = video.offsetWidth;
-				height = video.offsetHeight;
-			})
-			.catch((err) => {
-				console.log('An error occurred: ' + err);
-			});
+		video.srcObject = stream;
+		video.play();
 	});
 
 	function takePicture() {
-		const ctx = canvas.getContext('2d')!;
-		ctx.drawImage(video, 0, 0, width, height);
+		clearCanvas();
 
-		const data = canvas.toDataURL('image/png');
-		image.setAttribute('src', data);
+		const ctx = canvas.getContext('2d')!;
+		ctx.drawImage(video, 0, 0);
+
+		imageSrc = canvas.toDataURL('image/png');
+		image.setAttribute('src', imageSrc);
 	}
 
 	function submitFile() {
-		console.log(file.value);
+		clearCanvas();
+
 		let reader = new FileReader();
 		reader.onload = function (e) {
-			image.setAttribute('src', e.target!.result as string);
+			imageSrc = e.target!.result as string;
+			image.setAttribute('src', imageSrc);
 		};
 		reader.readAsDataURL(file.files![0]);
 	}
@@ -51,8 +51,6 @@
 		ctx.drawImage(image, 0, 0, width, height);
 		const base64 = canvas.toDataURL('image/png').slice(22);
 
-		console.log(base64);
-
 		await fetch('http://localhost:4040/recipes', {
 			method: 'POST',
 			body: JSON.stringify({ thumbnail: base64 }),
@@ -60,6 +58,11 @@
 				'Content-Type': 'application/json',
 			},
 		});
+	}
+
+	function clearCanvas() {
+		const ctx = canvas.getContext('2d')!;
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 </script>
 
@@ -74,8 +77,30 @@
 	/>
 
 	<h2>Or...</h2>
+	<div class="flex gap-4 flex-wrap justify-center">
+		<video
+			muted
+			id="video"
+			class=" rounded-2xl"
+			bind:videoWidth={width}
+			bind:videoHeight={height}
+		>
+			Video stream not available.
+		</video>
 
-	<video muted id="video">Video stream not available.</video>
+		<img
+			alt="shutuop"
+			id="image"
+			class:hidden={!imageSrc}
+			class=" rounded-2xl"
+			{width}
+			{height}
+		/>
+
+		{#if !imageSrc}
+			<div class="skeleton h-full" style="width: {width}px" />
+		{/if}
+	</div>
 	<div class="flex gap-2">
 		<button id="start" class="btn input-bordered" on:click={takePicture}
 			>Take Photo</button
@@ -84,6 +109,6 @@
 			>Submit Photo</button
 		>
 	</div>
-	<canvas id="canvas" {width} {height} class=" hidden" />
-	<img alt="Test" {width} {height} id="image" />
+
+	<canvas id="canvas" class="hidden" {width} {height} />
 </div>
