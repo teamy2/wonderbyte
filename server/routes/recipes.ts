@@ -1,6 +1,7 @@
 import express from "express";
 import { recipes } from "../src";
 import fs from "fs";
+import path from "path";
 
 const router = express.Router();
 
@@ -23,11 +24,15 @@ router.get("/:id", (request, res) => {
 });
 
 // Post recipe
-router.post("/:id", async (request, res) => {
+router.post("/", async (request, res) => {
 	try {
-		recipes.set(recipes.size, request.body);
+		const id = recipes.size;
+		recipes.set(id, request.body);
 		const base64Image = Buffer.from(request.body.thumbnail, "base64");
-		await fs.promises.writeFile(request.params.id, base64Image);
+		await fs.promises.writeFile(
+			path.join("./thumbails", id.toString()),
+			base64Image
+		);
 		res.json({ status: "success" });
 	} catch (error) {
 		res.json({ status: "error" });
