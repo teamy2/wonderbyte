@@ -130,7 +130,7 @@
 					</div>
 				</div>
 
-				<label class="w-full h-full">
+				<label class="w-full h-full cursor-pointer">
 					{#if preview}
 						<div
 							class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
@@ -169,7 +169,7 @@
 						</div>
 					{:else}
 						<div
-							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center"
+							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center hover:bg-base-300 transition-all duration-300"
 						>
 							<ImagePlus class="w-8 h-8" />
 						</div>
