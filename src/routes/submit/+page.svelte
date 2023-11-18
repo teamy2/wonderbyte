@@ -9,22 +9,29 @@
 	let width: number;
 	let height: number;
 
+	let cameraBlocked = false;
+	let videoEnabled = false;
 	let imageSrc: string;
-	onMount(async () => {
+	onMount(() => {
 		video = document.getElementById('video')! as HTMLVideoElement;
 		file = document.getElementById('file')! as HTMLInputElement;
 		canvas = document.getElementById('canvas')! as HTMLCanvasElement;
-
 		image = document.getElementById('image')! as HTMLImageElement;
-		let stream = await navigator.mediaDevices.getUserMedia({
-			video: true,
-			audio: false,
-		});
-
-		video.srcObject = stream;
-		video.play();
 	});
 
+	async function enableCamera() {
+		try {
+			let stream = await navigator.mediaDevices.getUserMedia({
+				video: true,
+				audio: false,
+			});
+			videoEnabled = true;
+			video.srcObject = stream;
+			video.play();
+		} catch (e) {
+			cameraBlocked = true;
+		}
+	}
 	function takePicture() {
 		clearCanvas();
 
@@ -79,38 +86,80 @@
 	/>
 
 	<h2>Or...</h2>
-	<div class="flex gap-4 flex-wrap justify-center">
-		<video
-			muted
-			id="video"
-			class=" rounded-2xl"
-			bind:videoWidth={width}
-			bind:videoHeight={height}
-		>
-			Video stream not available.
-		</video>
+	<div
+		class="grid grid-cols-2 w-full max-w-7xl aspect-video gap-4 place-items-center h-3/5"
+	>
+		{#if !videoEnabled}
+			<div class="skeleton h-full w-full grid place-items-center">
+				{#if cameraBlocked}
+					<h2>Camera Blocked</h2>
+				{:else}
+					<button id="start" class="btn" on:click={enableCamera}
+						>Enable Camera</button
+					>
+				{/if}
+			</div>
+		{/if}
 
-		<img
-			alt="shutuop"
-			id="image"
-			class:hidden={!imageSrc}
-			class=" rounded-2xl"
-			{width}
-			{height}
-		/>
+		<div class="relative" class:hidden={!videoEnabled}>
+			<video
+				muted
+				id="video"
+				class=" rounded-2xl my-auto"
+				bind:videoWidth={width}
+				bind:videoHeight={height}
+			>
+				Video stream not available.
+			</video>
+			<div
+				class="absolute bottom-0 left-0 right-0 flex place-content-center p-4"
+			>
+				<button
+					id="start"
+					class=" w-8 h-8 rounded-full bg-white outline outline-white outline-1 outline-offset-4 hover:bg-gray-300"
+					on:click={takePicture}
+				/>
+			</div>
+		</div>
+
+		<div class:hidden={!imageSrc} class="relative">
+			<img alt="Could not load" id="image" class="rounded-2xl object-cover" />
+
+			<div
+				class="absolute bottom-0 left-0 right-0 flex place-content-center p-4 0"
+			>
+				<button
+					class="opacity-50 hover:opacity-80 swap swap-rotate hover:swap-active"
+					on:click={submitPicture}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class=" swap-off fill-white w-10 h-10"
+						viewBox="0 0 24 24"
+						><path
+							d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+						/></svg
+					>
+
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="swap-on fill-success w-10 h-10"
+						viewBox="0 0 24 24"
+						><path
+							d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+						/></svg
+					>
+				</button>
+			</div>
+		</div>
 
 		{#if !imageSrc}
-			<div class="skeleton h-full" style="width: {width}px" />
+			<div class="skeleton h-full w-full grid place-items-center">
+				<h2>Your image goes here!</h2>
+			</div>
 		{/if}
 	</div>
-	<div class="flex gap-2">
-		<button id="start" class="btn input-bordered" on:click={takePicture}
-			>Take Photo</button
-		>
-		<button class="btn input-bordered" on:click={submitPicture}
-			>Submit Photo</button
-		>
-	</div>
+	<div class="flex gap-2" />
 
 	<canvas id="canvas" class="hidden" {width} {height} />
 </div>
