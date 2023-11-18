@@ -1,5 +1,6 @@
 import express from "express";
 import { recipes } from "..";
+import fs from "fs";
 
 const router = express.Router();
 
@@ -18,6 +19,18 @@ router.get("/:id", (request, res) => {
 		res.json(recipes.get(parseInt(request.params.id)));
 	} catch (error) {
 		res.status(404).json({ error });
+	}
+});
+
+// Post recipe
+router.post("/:id", async (request, res) => {
+	try {
+		recipes.set(recipes.size, request.body);
+		const base64Image = Buffer.from(request.body.thumbnail, "base64");
+		await fs.promises.writeFile(request.params.id, base64Image);
+		res.json({ status: "success" });
+	} catch (error) {
+		res.json({ status: "error" });
 	}
 });
 
