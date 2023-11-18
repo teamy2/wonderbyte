@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { pool } from "../database";
 import { generateRecipe } from "../gpt";
-import { transform } from '../response';
+import { transform, validate } from '../response';
 
 
 const router = express.Router();
@@ -43,16 +43,16 @@ router.get("/:id", transform(GetRecipe, async (request) => {
 	return recipe.rows[0];
 }));
 
-router.get("/:id/thumbnail", async (request, response) => {
+router.get("/:id/thumbnail", validate(GetRecipe, async (request, response) => {
 	try {
 		response.setHeader("Content-Type", "image/png");
 		response.send(fs.createReadStream(
-			path.join("./thumbnails", request.params.id),
+			path.join("./thumbnails", request.params.id.toString()),
 		));
 	} catch {
 		return response.status(404).send();
 	}
-});
+}));
 
 const CreateRecipe = z.object({
 	body: z.object({

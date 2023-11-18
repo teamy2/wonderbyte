@@ -13,9 +13,7 @@ export type Response<T> = {
 	data: T
 }
 
-export type Option<T> = T | null;
-
-export async function recipe(id: number): Promise<Option<Recipe>> {
+export async function recipe(id: number): Promise<Recipe | null> {
 	const { data } = await client.get<Response<Recipe>>(`/recipes/${id}`);
 
 	return data.success ? data.data : null;

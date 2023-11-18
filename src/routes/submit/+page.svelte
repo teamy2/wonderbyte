@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import CameraOff from '~icons/mdi/camera-off';
+	import CameraPlus from '~icons/mdi/camera-plus';
+
+	const enum VideoStatus {
+		ENABLED,
+		DISABLED,
+		BLOCKED,
+	}
+
 	let canvas: HTMLCanvasElement;
 	let video: HTMLVideoElement;
 
@@ -8,31 +16,25 @@
 	let width: number;
 	let height: number;
 
-	let cameraBlocked = false;
-	let videoEnabled = false;
 	let imageSrc: string;
+	let videoStatus = VideoStatus.DISABLED;
 
 	let loading = false;
-	onMount(() => {
-		video = document.getElementById('video')! as HTMLVideoElement;
-		file = document.getElementById('file')! as HTMLInputElement;
-		canvas = document.getElementById('canvas')! as HTMLCanvasElement;
-		image = document.getElementById('image')! as HTMLImageElement;
-	});
 
 	async function enableCamera() {
 		try {
-			let stream = await navigator.mediaDevices.getUserMedia({
+			video.srcObject = await navigator.mediaDevices.getUserMedia({
 				video: true,
 				audio: false,
 			});
-			videoEnabled = true;
-			video.srcObject = stream;
-			video.play();
+
+			await video.play();
+			videoStatus = VideoStatus.ENABLED;
 		} catch (e) {
-			cameraBlocked = true;
+			videoStatus = VideoStatus.BLOCKED;
 		}
 	}
+
 	function takePicture() {
 		clearCanvas();
 
@@ -79,34 +81,31 @@
 <div class="flex flex-col justify-center items-center h-screen gap-4">
 	{#if !loading}
 		<h2 class="text-xl">Upload your image!</h2>
-		<input
-			accept="image/*"
-			id="file"
-			type="file"
-			on:change={submitFile}
-			class="file-input w-full max-w-xs input-bordered"
-		/>
 
 		<h2>Or...</h2>
 		<div
 			class="grid grid-cols-2 w-full max-w-7xl aspect-video gap-4 place-items-center h-3/5"
 		>
-			{#if !videoEnabled}
-				<div class="skeleton h-full w-full grid place-items-center">
-					{#if cameraBlocked}
-						<h2>Camera Blocked</h2>
+			{#if videoStatus !== VideoStatus.ENABLED}
+				<div
+					class="bg-base-200 rounded-3xl h-full w-full grid place-items-center"
+				>
+					{#if videoStatus === VideoStatus.BLOCKED}
+						<h2>
+							<CameraOff />
+						</h2>
 					{:else}
-						<button id="start" class="btn" on:click={enableCamera}
-							>Enable Camera</button
-						>
+						<button id="start" class="btn" on:click={enableCamera}>
+							<CameraPlus />
+						</button>
 					{/if}
 				</div>
 			{/if}
 
-			<div class="relative" class:hidden={!videoEnabled}>
+			<div class="relative" class:hidden={videoStatus !== VideoStatus.ENABLED}>
 				<video
 					muted
-					id="video"
+					bind:this={video}
 					class=" rounded-2xl my-auto"
 					bind:videoWidth={width}
 					bind:videoHeight={height}
@@ -124,46 +123,64 @@
 				</div>
 			</div>
 
-			<div class:hidden={!imageSrc} class="relative">
-				<img alt="Could not load" id="image" class="rounded-2xl object-cover" />
+			<label class="w-full h-full">
+				<div class:hidden={!imageSrc} class="relative">
+					<img
+						alt="Could not load"
+						bind:this={image}
+						class="rounded-2xl object-cover"
+					/>
 
-				<div
-					class="absolute bottom-0 left-0 right-0 flex place-content-center p-4 0"
-				>
-					<button
-						class="opacity-50 hover:opacity-80 swap swap-rotate hover:swap-active"
-						on:click={submitPicture}
+					<div
+						class="absolute bottom-0 left-0 right-0 flex place-content-center p-4 0"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class=" swap-off fill-success w-10 h-10"
-							viewBox="0 0 24 24"
-							><path
-								d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
-							/></svg
+						<button
+							class="opacity-50 hover:opacity-80 swap swap-rotate hover:swap-active"
+							on:click={submitPicture}
 						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class=" swap-off fill-success w-10 h-10"
+								viewBox="0 0 24 24"
+							>
+								<path
+									d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+								/>
+							</svg>
 
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="swap-on fill-success w-10 h-10"
-							viewBox="0 0 24 24"
-							><path
-								d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
-							/></svg
-						>
-					</button>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="swap-on fill-success w-10 h-10"
+								viewBox="0 0 24 24"
+							>
+								<path
+									d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"
+								/>
+							</svg>
+						</button>
+					</div>
 				</div>
-			</div>
 
-			{#if !imageSrc}
-				<div class="skeleton h-full w-full grid place-items-center">
-					<h2>Your image goes here!</h2>
-				</div>
-			{/if}
+				{#if !imageSrc}
+					<div
+						class="bg-base-200 rounded-3xl h-full w-full grid place-items-center"
+					>
+						<h2>Your image goes here!</h2>
+					</div>
+				{/if}
+
+				<input
+					accept="image/png"
+					bind:this={file}
+					type="file"
+					on:change={submitFile}
+					class="opacity-0"
+				/>
+			</label>
 		</div>
 		<div class="flex gap-2" />
 
-		<canvas id="canvas" class="hidden" {width} {height} />
+		<canvas bind:this={canvas} class="hidden" {width} {height} />
 	{:else}
 		<span class="loading loading-spinner loading-lg" />
 	{/if}
