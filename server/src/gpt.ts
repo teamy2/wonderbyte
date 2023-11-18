@@ -7,15 +7,26 @@ const openai = new OpenAI({
     apiKey: process.env["OPENAI_API_KEY"],
 });
 
+
 async function main() {
-    const stream = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [{ role: 'user', content: 'Say this is a test,'}],
-      stream: true,
+    const response = await openai.chat.completions.create({
+      model: "gpt-4-vision-preview",
+      max_tokens: 4096,
+      messages: [
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Give me a recipe for the food item in the image" },
+            {
+              type: "image_url",
+              image_url: {
+                "url": "https://chocolatecoveredkatie.com/wp-content/uploads/2018/08/Vegan-Kraft-Mac-Cheese-500x500.jpg",
+              },
+            },
+          ],
+        },
+      ],
     });
-    for await (const chunk of stream) {
-      process.stdout.write(chunk.choices[0]?.delta?.content || '');
-    }
+    console.log(response.choices[0]);
   }
-  
   main();
