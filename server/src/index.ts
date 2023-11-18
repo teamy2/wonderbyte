@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { recipeRouter } from "./routes/recipes";
+import { recipeRouter } from "../routes/recipes";
 
 type Recipe = {
 	id: number;
