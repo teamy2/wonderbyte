@@ -20,8 +20,6 @@ pool.query(`CREATE TABLE IF NOT EXISTS recipe (
 	ingredients TEXT[]
 )`);
 
-export const recipes = new Map<number, Recipe>();
-
 dotenv.config();
 
 const app = express();

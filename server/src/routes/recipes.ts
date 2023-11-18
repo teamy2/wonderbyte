@@ -1,5 +1,4 @@
 import express from "express";
-import { recipes } from "..";
 import { pool } from "../database";
 import fs from "fs";
 import path from "path";
@@ -23,21 +22,20 @@ router.get("/:id", async (request, res) => {
 
 // Post recipe
 router.post("/", async (request, res) => {
-	try {
-		const id = recipes.size;
-		recipes.set(id, request.body);
-		const base64Image = Buffer.from(request.body.thumbnail, "base64");
-		await fs.promises.writeFile(
-			path.join("./thumbnails", id.toString()),
-			base64Image
-		);
-		res.json({ 
-			status: "success",
-		recipe: await generateRecipe(request.body.thumbnail) });
-	} catch (error) {
-		console.log(error);
-		res.json({ status: "error" });
-	}
+	const { name, description, instructions, ingredients } = request.body;
+	const { rows } = await pool.query<Recipe>(
+		"INSERT INTO recipe VALUES ($1, $2, $3, $4) RETURNING id",
+		[name, description, instructions, ingredients]
+	);
+	const base64Image = Buffer.from(request.body.thumbnail, "base64");
+	await fs.promises.writeFile(
+		path.join("./thumbnails", rows[0].id.toString()),
+		base64Image
+	);
+	res.json({
+		sucess: true,
+		recipe: await generateRecipe(request.body.thumbnail),
+	});
 });
 
 export { router as recipeRouter };
