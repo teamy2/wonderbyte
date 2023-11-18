@@ -15,11 +15,23 @@ router.get("/", async (request, res) => {
 
 // Get recipe by id
 router.get("/:id", async (request, res) => {
-	const recipe = await pool.query<Recipe>("SELECT * FROM recipe WHERE id = $1", [
-		request.params.id,
-	]);
+	const recipe = await pool.query<Recipe>(
+		"SELECT * FROM recipe WHERE id = $1",
+		[request.params.id]
+	);
 
 	res.json(recipe.rows[0]);
+});
+
+// Get recipes by attribute
+// ex. /recipes?foodtype=chinese,indian
+router.get("/", async (request, res) => {
+	const recipes = await pool.query<Recipe>(
+		"SELECT * FROM recipe WHERE category = ANY($1)",
+		[request.query.category.split(",")]
+	);
+
+	res.json(recipes.rows);
 });
 
 // Post recipe
