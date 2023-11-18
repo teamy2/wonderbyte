@@ -5,6 +5,7 @@
 	import ImagePlus from '~icons/mdi/image-plus';
 
 	import * as api from '$lib/api';
+	import { goto } from '$app/navigation';
 
 	const enum VideoStatus {
 		ENABLED,
@@ -61,6 +62,8 @@
 	async function submitPicture() {
 		submitted = true;
 		recipe = await api.createRecipe(preview.slice(22));
+
+		goto(`/recipes/${recipe!.id}`);
 	}
 
 	function clearCanvas() {
@@ -70,7 +73,7 @@
 
 {#if submitted}
 	<div class="mt-16">
-		<RecipeComponent {recipe} />
+		<RecipeComponent />
 	</div>
 {:else}
 	<div class="grid place-content-center h-screen w-full mt-16">
