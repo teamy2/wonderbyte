@@ -39,9 +39,9 @@
 		</button>
 		<button
 			class=" px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"
-			on:click={() => goto('/submit')}
+			on:click={() => goto('/create')}
 		>
-			Submit
+			Create
 		</button>
 	</nav>
 </header>
