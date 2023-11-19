@@ -1,3 +1,7 @@
+<script>
+	import { goto } from '$app/navigation';
+</script>
+
 <header class="absolute left-0 right-0 top-0 z-50 flex items-center gap-8 p-4">
 	<a class="flex items-center" href="/">
 		<svg
@@ -17,26 +21,27 @@
 			/>
 			<line x1="6" x2="18" y1="17" y2="17" />
 		</svg>
-		<span class="ml-2 text-2xl font-semibold">CookingSite</span>
+		<span class="ml-2 text-2xl font-semibold">Wonderbyte</span>
 	</a>
+
 	<nav class="hidden md:flex space-x-4">
-		<a
+		<button
 			class="px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"
-			href="/"
+			on:click={() => goto('/')}
 		>
 			Home
-		</a>
-		<a
+		</button>
+		<button
 			class=" px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"
-			href="/browse"
+			on:click={() => goto('/browse')}
 		>
 			Browse
-		</a>
-		<a
+		</button>
+		<button
 			class=" px-4 py-2 text-lg bg-base-200 hover:bg-base-300 rounded-md"
-			href="/submit"
+			on:click={() => goto('/generate')}
 		>
-			Submit
-		</a>
+			Generate
+		</button>
 	</nav>
 </header>

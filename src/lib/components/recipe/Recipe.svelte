@@ -38,7 +38,7 @@
 				<div class="w-72 skeleton h-8" />
 
 				<ul class="w-96">
-					{#each Array.from({ length: 5 }) as _}
+					{#each { length: 5 } as _}
 						<li class="w-full skeleton" />
 					{/each}
 				</ul>
@@ -46,7 +46,7 @@
 				<div class="w-72 skeleton h-8" />
 
 				<ol class="w-96">
-					{#each Array.from({ length: 5 }) as _}
+					{#each { length: 5 } as _}
 						<li class="w-full skeleton" />
 					{/each}
 				</ol>
@@ -69,10 +69,10 @@
 			<div class="flex flex-row flex-wrap gap-1">
 				{#if recipe}
 					{#each recipe.tags as tag}
-						<div class="badge badge-lg">{tag}</div>
+						<div class="badge badge-lg badge-neutral">{tag}</div>
 					{/each}
 				{:else}
-					{#each Array.from({ length: 5 }) as _}
+					{#each { length: 5 } as _}
 						<div
 							class="badge badge-lg skeleton"
 							style="width: {Math.floor(Math.random() * 20 + 100)}px"

@@ -46,9 +46,12 @@ router.get("/:id", transform(GetRecipe, async (request) => {
 router.get("/:id/thumbnail", validate(GetRecipe, async (request, response) => {
 	try {
 		response.setHeader("Content-Type", "image/png");
-		response.send(fs.createReadStream(
-			path.join("./thumbnails", request.params.id.toString()),
-		));
+
+		const image = await fs.promises.readFile(
+			path.join("./thumbnails", request.params.id.toString())
+		);
+
+		response.send(image);
 	} catch {
 		return response.status(404).send();
 	}
@@ -65,9 +68,13 @@ router.post("/", transform(CreateRecipe, async (request) => {
 	const base64Image = Buffer.from(request.body.thumbnail, "base64");
 	const recipe = await generateRecipe(request.body.thumbnail);
 
+	if (!recipe) {
+		throw new Error("Recipe could not be generated");
+	}
+
 	const { rows } = await pool.query<Recipe>(
-		"INSERT INTO recipe (name, description, instructions, ingredients) VALUES ($1, $2, $3, $4) RETURNING *",
-		[recipe.name, recipe.description, recipe.instructions, recipe.ingredients]
+		"INSERT INTO recipe (name, description, instructions, ingredients, tags) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+		[recipe.name, recipe.description, recipe.instructions, recipe.ingredients, recipe.tags]
 	);
 
 	await fs.promises.writeFile(

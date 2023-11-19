@@ -13,12 +13,12 @@ const config = {
 			{
 				light: {
 					...require('daisyui/src/theming/themes')['light'],
-					'primary': '#78C091',
-					'primary-content': '#000',
-					'secondary': '#6E9075',
+					'primary': '#916bbf',
+					'primary-content': '#fff',
+					'secondary': '#DDBDD5',
 					'secondary-content': '#000',
-					'accent': '#563635',
-					'accent-content': '#000',
+					'accent': '#1D1E2C',
+					'accent-content': '#fff',
 				}
 			}
 		]

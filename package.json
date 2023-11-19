@@ -1,6 +1,6 @@
 {
-	"name": "alicehacks",
-	"version": "0.0.1",
+	"name": "@teamy2/wonderbyte",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -36,7 +36,7 @@
 		"gsap": "^3.12.2",
 		"svelte-masonry-layout": "^0.0.7",
 		"svelte-reveal": "^0.7.0",
-		"svelte-typewriter": "^3.2.2",
+		"svelte-typewriter": "^3.2.1",
 		"unplugin-icons": "^0.17.4"
 	}
 }

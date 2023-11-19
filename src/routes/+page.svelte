@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Typewriter from 'svelte-typewriter';
-	import { reveal } from 'svelte-reveal';
+	import Typewriter from "svelte-typewriter";
+	import { reveal } from "svelte-reveal";
 </script>
 
 <a
@@ -52,8 +52,8 @@
 					</span>
 
 					<a class="btn btn-primary group" href="/browse">Browse recipes</a>
-					<a class="btn btn-accent group" href="/submit">
-						Submit an image
+					<a class="btn btn-accent group" href="/generate">
+						Generate a recipe
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -79,103 +79,126 @@
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
 				}}
 			>
-				Lorem ipsum dolor sit amet.
+				Unleash Creativity in Your Kitchen
 			</h1>
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
 				}}
 			>
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut earum
-				voluptatibus modi error illo odio assumenda dignissimos repellendus!
-				Explicabo temporibus dolor maiores cupiditate nemo suscipit omnis nulla,
-				perferendis corporis ullam, voluptatem natus et. Inventore pariatur at
-				perferendis aut id temporibus sit exercitationem. Exercitationem facere
-				dolor, laborum eos, corporis et hic sed temporibus ea eveniet dicta
-				ducimus commodi necessitatibus quia quaerat earum rem repellat
-				laboriosam deserunt sequi voluptatum nesciunt iste doloribus. Culpa quo
-				exercitationem rerum expedita nesciunt! Exercitationem nobis accusantium
-				eos at. Temporibus optio distinctio porro, praesentium facilis iure sit
-				voluptas, quis, necessitatibus suscipit veniam obcaecati dolor excepturi
-				delectus tenetur mollitia?
+				Welcome to a culinary revolution where your plate is the canvas and AI
+				is your personal sous-chef. Our innovative platform transforms the way
+				you cook and experience food. Simply upload an image of a dish you're
+				craving, and let our cutting-edge AI craft a custom recipe for you. Dive
+				into a world of flavor where nutrition meets innovation, ensuring that
+				each meal is not only delectable but also perfectly tailored to your
+				health goals and taste preferences. Embrace the future of cooking with
+				AI, and turn every meal into a masterpiece of taste and nourishment.
 			</p>
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: 5,
 				}}
 				class="text-right"
 			>
-				Lorem ipsum dolor sit amet.
+				Crafted by Technology, Inspired by You
 			</h1>
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: 5,
 				}}
 				class="text-right"
 			>
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut earum
-				voluptatibus modi error illo odio assumenda dignissimos repellendus!
-				Explicabo temporibus dolor maiores cupiditate nemo suscipit omnis nulla,
-				perferendis corporis ullam, voluptatem natus et. Inventore pariatur at
-				perferendis aut id temporibus sit exercitationem. Exercitationem facere
-				dolor, laborum eos, corporis et hic sed temporibus ea eveniet dicta
-				ducimus commodi necessitatibus quia quaerat earum rem repellat
-				laboriosam deserunt sequi voluptatum nesciunt iste doloribus. Culpa quo
-				exercitationem rerum expedita nesciunt! Exercitationem nobis accusantium
-				eos at. Temporibus optio distinctio porro, praesentium facilis iure sit
-				voluptas, quis, necessitatibus suscipit veniam obcaecati dolor excepturi
-				delectus tenetur mollitia?
+				Imagine a world where you're never out of ideas for your next meal. Our
+				AI-powered recipes are designed to ignite your passion for cooking,
+				offering personalized, easy-to-follow instructions based on your unique
+				food images. Whether you're a seasoned chef or a kitchen novice, our
+				platform guides you to create culinary delights that cater to your
+				lifestyle. Say goodbye to generic recipes and hello to bespoke meal
+				plans that inspire and excite. With our AI, you're not just cooking;
+				you're crafting a personal dining experience.
 			</p>
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
 				}}
 			>
-				Lorem ipsum dolor sit amet.
+				Eco-Friendly Eating with AI Assistance
 			</h1>
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
 				}}
 			>
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut earum
-				voluptatibus modi error illo odio assumenda dignissimos repellendus!
-				Explicabo temporibus dolor maiores cupiditate nemo suscipit omnis nulla,
-				perferendis corporis ullam, voluptatem natus et. Inventore pariatur at
-				perferendis aut id temporibus sit exercitationem. Exercitationem facere
-				dolor, laborum eos, corporis et hic sed temporibus ea eveniet dicta
-				ducimus commodi necessitatibus quia quaerat earum rem repellat
-				laboriosam deserunt sequi voluptatum nesciunt iste doloribus. Culpa quo
-				exercitationem rerum expedita nesciunt! Exercitationem nobis accusantium
-				eos at. Temporibus optio distinctio porro, praesentium facilis iure sit
-				voluptas, quis, necessitatibus suscipit veniam obcaecati dolor excepturi
-				delectus tenetur mollitia?
+				Join us in the movement towards a more sustainable future, one plate at
+				a time. Our AI-driven approach encourages the use of seasonal and local
+				produce, minimizing your carbon footprint while maximizing flavor. We
+				believe that being environmentally conscious doesn't have to compromise
+				on taste or variety. Our platform helps you make informed decisions
+				about your ingredients, promoting a greener lifestyle that benefits both
+				the planet and your palate. With our technology, you'll not only savor
+				the taste of your meals but also take pride in the positive impact
+				you're making on the environment.
+			</p>
+			<h1
+				use:reveal={{
+					transition: "slide",
+					delay: 200,
+					duration: 300,
+					x: -5,
+				}}
+				class="text-right"
+			>
+				Embrace a Healthier Lifestyle
+			</h1>
+
+			<p
+				use:reveal={{
+					transition: "slide",
+					delay: 200,
+					duration: 300,
+					x: -5,
+				}}
+				class="text-right"
+			>
+				Our approach to healthy eating, guided by AI technology, goes beyond the
+				confines of ready-made foods to encourage a diverse and nourishing
+				culinary experience. By advocating the inclusion of fresh, locally
+				sourced, and seasonal ingredients, we empower individuals to break free
+				from the monotony of convenience meals. This not only broadens the
+				spectrum of flavors but also ensures a more balanced and nutrient-rich
+				diet. Embracing this approach allows people to savor a variety of
+				options, providing essential vitamins, minerals, and antioxidants that
+				contribute to overall well-being. Our platform facilitates a shift
+				towards a healthier lifestyle, promoting a positive relationship with
+				nutrition and enabling individuals to take charge of their well-being
+				through mindful and personalized food choices.
 			</p>
 		</div>
 	</div>
