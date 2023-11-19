@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Typewriter from 'svelte-typewriter';
-	import { reveal } from 'svelte-reveal';
+	import Typewriter from "svelte-typewriter";
+	import { reveal } from "svelte-reveal";
 </script>
 
 <a
@@ -79,7 +79,7 @@
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
@@ -90,7 +90,7 @@
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
@@ -108,7 +108,7 @@
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: 5,
@@ -120,7 +120,7 @@
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: 5,
@@ -139,7 +139,7 @@
 
 			<h1
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
@@ -150,7 +150,7 @@
 
 			<p
 				use:reveal={{
-					transition: 'slide',
+					transition: "slide",
 					delay: 200,
 					duration: 300,
 					x: -5,
@@ -165,6 +165,40 @@
 				the planet and your palate. With our technology, you'll not only savor
 				the taste of your meals but also take pride in the positive impact
 				you're making on the environment.
+			</p>
+			<h1
+				use:reveal={{
+					transition: "slide",
+					delay: 200,
+					duration: 300,
+					x: -5,
+				}}
+				class="text-right"
+			>
+				Embrace a Healthier Lifestyle
+			</h1>
+
+			<p
+				use:reveal={{
+					transition: "slide",
+					delay: 200,
+					duration: 300,
+					x: -5,
+				}}
+				class="text-right"
+			>
+				Our approach to healthy eating, guided by AI technology, goes beyond the
+				confines of ready-made foods to encourage a diverse and nourishing
+				culinary experience. By advocating the inclusion of fresh, locally
+				sourced, and seasonal ingredients, we empower individuals to break free
+				from the monotony of convenience meals. This not only broadens the
+				spectrum of flavors but also ensures a more balanced and nutrient-rich
+				diet. Embracing this approach allows people to savor a variety of
+				options, providing essential vitamins, minerals, and antioxidants that
+				contribute to overall well-being. Our platform facilitates a shift
+				towards a healthier lifestyle, promoting a positive relationship with
+				nutrition and enabling individuals to take charge of their well-being
+				through mindful and personalized food choices.
 			</p>
 		</div>
 	</div>
