@@ -93,13 +93,13 @@
 				{#if videoStatus !== VideoStatus.ENABLED}
 					{#if videoStatus === VideoStatus.BLOCKED}
 						<div
-							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center hover:bg-base-300 transition-all duration-300"
+							class="bg-base-200 rounded-3xl w-full grid place-items-center hover:bg-base-300 transition-all duration-300 aspect-square"
 						>
 							<CameraOff class="w-8 h-8" />
 						</div>
 					{:else}
 						<button
-							class="bg-base-200 rounded-3xl h-full w-full grid place-items-center hover:bg-base-300 transition-all duration-300"
+							class="bg-base-200 rounded-3xl w-full grid place-items-center hover:bg-base-300 transition-all duration-300 aspect-square"
 							on:click={enableCamera}
 						>
 							<CameraPlus class="w-8 h-8" />
@@ -108,7 +108,7 @@
 				{/if}
 
 				<div
-					class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
+					class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full aspect-square"
 					class:hidden={videoStatus !== VideoStatus.ENABLED}
 				>
 					<video
@@ -131,17 +131,13 @@
 					</div>
 				</div>
 
-				<label class="w-full h-full cursor-pointer">
+				<label class="w-full cursor-pointer aspect-square">
 					{#if preview}
 						<div
-							class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
+							class="relative bg-black rounded-3xl h-full overflow-hidden flex place-items-center w-full"
 							class:hidden={!preview}
 						>
-							<img
-								alt="Could not load"
-								class="object-cover aspect-square"
-								src={preview}
-							/>
+							<img alt="Could not load" class="object-cover" src={preview} />
 						</div>
 					{:else}
 						<div
@@ -156,19 +152,20 @@
 						bind:this={file}
 						type="file"
 						on:change={submitFile}
-						class="opacity-0"
+						class="hidden"
 					/>
 				</label>
 			</div>
 
 			<button
 				class="btn btn-primary btn-lg place-self-end"
+				disabled={!preview}
 				on:click={submitPicture}
 			>
 				Generate <AutoAwesome />
 			</button>
-
-			<canvas bind:this={canvas} class="hidden" {width} {height} />
 		</div>
 	</div>
 {/if}
+
+<canvas bind:this={canvas} class="hidden" {width} {height} />
