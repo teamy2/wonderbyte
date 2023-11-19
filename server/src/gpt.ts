@@ -13,7 +13,7 @@ const APIRecipe = z.object({
 	description: z.string(),
 	instructions: z.string().array(),
 	ingredients: z.string().array(),
-	tags: z.string().array(),
+	tags: z.string().toLowerCase().array(),
 });
 
 const Recipe = z.object({
@@ -64,8 +64,6 @@ success: false,
 	const output = response.choices[0].message.content?.startsWith("```json")
 		? response.choices[0].message.content.slice(7, -3)
 		: response.choices[0].message.content;
-
-		console.log(output);
 
 	const json = JSON.parse(output!);
 

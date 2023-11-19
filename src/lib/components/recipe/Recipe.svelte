@@ -69,12 +69,12 @@
 			<div class="flex flex-row flex-wrap gap-1">
 				{#if recipe}
 					{#each recipe.tags as tag}
-						<div class="badge badge-lg">{tag}</div>
+						<div class="badge badge-lg badge-neutral">{tag}</div>
 					{/each}
 				{:else}
 					{#each { length: 5 } as _}
 						<div
-							class="badge badge-lg badge-neutral skeleton"
+							class="badge badge-lg skeleton"
 							style="width: {Math.floor(Math.random() * 20 + 100)}px"
 						/>
 					{/each}

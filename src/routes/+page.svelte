@@ -52,8 +52,8 @@
 					</span>
 
 					<a class="btn btn-primary group" href="/browse">Browse recipes</a>
-					<a class="btn btn-accent group" href="/create">
-						Get a recipe
+					<a class="btn btn-accent group" href="/generate">
+						Generate a recipe
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
