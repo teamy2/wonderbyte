@@ -4,13 +4,9 @@
 	export let recipe: Recipe;
 </script>
 
-<a href="/recipes/{recipe.id}">
-	<div
-		class="rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
-	>
-		<img
-			src="{PUBLIC_BASE_URL}/recipes/{recipe.id}/thumbnail"
-			alt={recipe.name}
-		/>
-	</div>
-</a>
+<img
+	src="{PUBLIC_BASE_URL}/recipes/{recipe.id}/thumbnail"
+	alt={recipe.name}
+	class="rounded-xl hover:scale-105 transition-all duration-300 w-full object-cover"
+	style="height: {Math.floor(Math.random() * 200) + 150}px"
+/>

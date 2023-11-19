@@ -70,27 +70,42 @@
 		<Search class="absolute left-3 w-7 h-7 top-3" />
 	</div>
 
-	<MasonryLayout
-		items={filtered}
-		gap="1.5rem"
-		breakpointCols={{
-			default: 4,
-			600: 1,
-			800: 2,
-			1000: 3,
-		}}
-	>
-		{#each filtered as item}
-			<div class="h-fit">
-				{#if loading}
+	{#if loading}
+		<MasonryLayout
+			items={filtered}
+			gap="1.5rem"
+			breakpointCols={{
+				default: 4,
+				600: 1,
+				800: 2,
+				1000: 3,
+			}}
+		>
+			{#each filtered as item}
+				<div class="h-fit">
 					<div
 						class="w-full skeleton rounded-xl"
 						style="height: {Math.floor(Math.random() * 300) + 150}px"
 					/>
-				{:else}
+				</div>
+			{/each}
+		</MasonryLayout>
+	{:else}
+		<MasonryLayout
+			items={filtered}
+			gap="1.5rem"
+			breakpointCols={{
+				default: 4,
+				600: 1,
+				800: 2,
+				1000: 3,
+			}}
+		>
+			{#each filtered as item}
+				<div class="h-fit">
 					<Thumbnail recipe={item} />
-				{/if}
-			</div>
-		{/each}
-	</MasonryLayout>
+				</div>
+			{/each}
+		</MasonryLayout>
+	{/if}
 </Container>
