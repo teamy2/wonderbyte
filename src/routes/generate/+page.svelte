@@ -136,7 +136,11 @@
 							class="relative bg-black rounded-3xl overflow-hidden h-full flex place-items-center w-full"
 							class:hidden={!preview}
 						>
-							<img alt="Could not load" class="object-cover" src={preview} />
+							<img
+								alt="Could not load"
+								class="object-cover aspect-square"
+								src={preview}
+							/>
 
 							<div
 								class="absolute bottom-4 left-0 right-0 flex place-content-center"
@@ -176,7 +180,7 @@
 					{/if}
 
 					<input
-						accept="image/png"
+						accept="image/*"
 						bind:this={file}
 						type="file"
 						on:change={submitFile}

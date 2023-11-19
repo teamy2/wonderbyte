@@ -39,7 +39,7 @@
 		class="w-full bg-base-300 p-8 rounded-3xl gap-8 grid grid-cols-2 relative mt-32 shadow-xl"
 	>
 		<div class="prose">
-			<h1 class="max-w-lg text-4xl font-bold">Browse recipes, easily.</h1>
+			<h1 class="max-w-lg text-4xl font-bold">Wondering what to eat?</h1>
 
 			<p>
 				Discover a world of flavors at your fingertips—our intuitive AI sorts
