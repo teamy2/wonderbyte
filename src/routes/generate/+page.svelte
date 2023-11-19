@@ -77,8 +77,10 @@
 		<RecipeComponent />
 	</div>
 {:else}
-	<div class="grid place-content-center h-screen w-full mt-16">
-		<div class="w-full h-full flex flex-col gap-8">
+	<div class="flex place-content-center min-h-screen w-full mt-32">
+		<div
+			class="w-full h-full flex flex-col gap-2 place-content-center max-w-5xl"
+		>
 			<div class="w-full prose">
 				<h1 class="text-xl">Recipe generation AI</h1>
 
@@ -137,7 +139,11 @@
 							class="relative bg-black rounded-3xl h-full overflow-hidden flex place-items-center w-full"
 							class:hidden={!preview}
 						>
-							<img alt="Could not load" class="object-cover" src={preview} />
+							<img
+								alt="Could not load"
+								class="object-cover w-full h-full"
+								src={preview}
+							/>
 						</div>
 					{:else}
 						<div
