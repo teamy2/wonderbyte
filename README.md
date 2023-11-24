@@ -27,7 +27,7 @@ Installation
 1. Clone the repo
 
 ```sh
-git clone <https://github.com/yourusername/wonderbyte.git>
+git clone <https://github.com/teamy2/wonderbyte.git>
 ```
 
 2. Install NPM packages
